@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <filesystem>
 #include <fstream>
 
 std::string makeSarcastic(std::string text) {
@@ -38,8 +37,9 @@ int main(int argc, char *argv[]) {
         } else {
             std::cout<<"Could open file\n";
             std::string path = argv[1];
-            std::string filename = std::filesystem::path(path).filename();
-            std::string filepath = std::filesystem::path(path).remove_filename();
+            int found = path.find_last_of("/\\");
+            std::string filename = path.substr(found+1);
+            std::string filepath = (found!=-1) ? path.substr(0,found+1):"";
             std::string content((std::istreambuf_iterator<char>(the_file)),(std::istreambuf_iterator<char>()));
             the_file.close();
             // Makes file to store sarcastic text
