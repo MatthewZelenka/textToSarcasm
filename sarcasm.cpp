@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <filesystem>
 #include <fstream>
 
 std::string makeSarcastic(std::string text) {
@@ -7,11 +8,11 @@ std::string makeSarcastic(std::string text) {
     int capUpLower;
     for(int i = 0; i < text.size(); i++) {
         int Ichar = text[i]-0;
-        if ((Ichar >= 'a' && Ichar <= 'z') || (Ichar >= 'A' && Ichar <= 'Z')) {
+        if ((Ichar >= 'a' && Ichar <= 'z') || (Ichar >= 'A' && Ichar <= 'Z') && Ichar != ' ') {
             newText.push_back((capUpLower%2==1) ? tolower(text[i]):toupper(text[i]));
             capUpLower++;
         }else {
-            if (('.' || '?' || '!')== Ichar) {
+            if (('.' == Ichar) || ('!' == Ichar) || ('?' == Ichar) || ('\n' == Ichar)) {
                 capUpLower = 0;
             }
             newText.push_back(text[i]);
@@ -36,7 +37,19 @@ int main(int argc, char *argv[]) {
             std::cout<<"Could not open file use --help for help using the program\n";
         } else {
             std::cout<<"Could open file\n";
+            std::string path = argv[1];
+            std::string filename = std::filesystem::path(path).filename();
+            std::string filepath = std::filesystem::path(path).remove_filename();
+            std::string content((std::istreambuf_iterator<char>(the_file)),(std::istreambuf_iterator<char>()));
             the_file.close();
+            // Makes file to store sarcastic text
+            std::ofstream MyFile((std::string)(filepath+"sarcasm"+filename));
+
+            // Write to the file
+            MyFile << makeSarcastic(content);
+
+            // Close the file
+            MyFile.close();
         }
     }
     // the_file is closed implicitly here
