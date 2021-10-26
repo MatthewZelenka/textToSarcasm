@@ -21,37 +21,45 @@ std::string makeSarcastic(std::string text) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc > 1 && (argv[1] == (std::string)"--help")) {// argc should be 2 for correct execution
-        std::cout<<"Usage: "<< argv[0] <<" <filename/filepath>\nThis will create a new file in sarcasm or leave arguments empty to put in text directly\n";
-    } else if (argc == 1) {
-        std::string text;
-        std::cout << "Enter text: ";
-        std::getline(std::cin, text);
-        std::cout << "Sarcastic text:\n" << makeSarcastic(text)<<"\n";
-    } else if (argc == 2){
-        // We assume argv[1] is a filename to open
-        std::ifstream the_file (argv[1]);
-        // Always check to see if file opening succeeded
-        if(!the_file.is_open()){
-            std::cout<<"Could not open file use --help for help using the program\n";
-        } else {
-            std::cout<<"Could open file\n";
-            std::string path = argv[1];
-            int found = path.find_last_of("/\\");
-            std::string filename = path.substr(found+1);
-            std::string filepath = (found!=-1) ? path.substr(0,found+1):"";
-            std::string content((std::istreambuf_iterator<char>(the_file)),(std::istreambuf_iterator<char>()));
-            the_file.close();
-            // Makes file to store sarcastic text
-            std::ofstream MyFile((std::string)(filepath+"sarcasm"+filename));
-
-            // Write to the file
-            MyFile << makeSarcastic(content);
-
-            // Close the file
-            MyFile.close();
+    for (size_t i = 1; i < argc; i++) {
+        std::string param = argv[i];
+        if(param.rfind("--", 0) == 0 && param.find("=", 0) != -1 && param.find("=", param.find("=", 0)+1) == std::string::npos) {
+            std::cout<<argv[i]<<"var"<< param.find("=", 0) <<std::endl;
+        } else if (param.rfind("--", 0) == 0) {
+            std::cout<<argv[i]<<"flag"<<std::endl;
         }
     }
+    // if (argc > 1 && (argv[1] == (std::string)"--help")) {// argc should be 2 for correct execution
+    //     std::cout<<"Usage: "<< argv[0] <<" <filename/filepath>\nThis will create a new file in sarcasm or leave arguments empty to put in text directly\n";
+    // } else if (argc == 1) {
+    //     std::string text;
+    //     std::cout << "Enter text: ";
+    //     std::getline(std::cin, text);
+    //     std::cout << "Sarcastic text:\n" << makeSarcastic(text)<<"\n";
+    // } else if (argc == 2){
+    //     // We assume argv[1] is a filename to open
+    //     std::ifstream the_file (argv[1]);
+    //     // Always check to see if file opening succeeded
+    //     if(!the_file.is_open()){
+    //         std::cout<<"Could not open file use --help for help using the program\n";
+    //     } else {
+    //         std::cout<<"Could open file\n";
+    //         std::string path = argv[1];
+    //         int found = path.find_last_of("/\\");
+    //         std::string filename = path.substr(found+1);
+    //         std::string filepath = (found!=-1) ? path.substr(0,found+1):"";
+    //         std::string content((std::istreambuf_iterator<char>(the_file)),(std::istreambuf_iterator<char>()));
+    //         the_file.close();
+    //         // Makes file to store sarcastic text
+    //         std::ofstream MyFile((std::string)(filepath+"sarcasm"+filename));
+
+    //         // Write to the file
+    //         MyFile << makeSarcastic(content);
+
+    //         // Close the file
+    //         MyFile.close();
+    //     }
+    // }
     // the_file is closed implicitly here
     return 0;
 }
