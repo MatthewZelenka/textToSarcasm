@@ -101,11 +101,9 @@ int main(int argc, char *argv[]) { // add text input flag
         std::ofstream MyFile(newFileName); //(std::string)(filepath+"sarcasm"+filename)
         // Write to the file
         MyFile << makeSarcastic(text);
-
         // Close the file
         MyFile.close();
     }
-
     // if (argc > 1 && (argv[1] == (std::string)"--help")) {// argc should be 2 for correct execution
     //     std::cout<<"Usage: "<< argv[0] <<" <filename/filepath>\nThis will create a new file in sarcasm or leave arguments empty to put in text directly\n";
     // } else if (argc == 1) {
